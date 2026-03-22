@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction History</title>
+    <link rel="stylesheet" href="{% static 'css/history.css' %}">
+</head>
+<body>
+
+<div class="history-container">
+    <h2>Your Prediction History</h2>
+
+    <!-- Back to Home Button -->
+    <div style="margin-bottom:20px;">
+        <a href="{% url 'home' %}">
+            <button type="button">⬅ Back to Home</button>
+        </a>
+    </div>
+
+    <!-- Predictions Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Input Data</th>
+                <th>Result</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in predictions %}
+            <tr>
+                <td>{{ p.input_data }}</td>
+                <td>{{ p.result }}</td>
+                <td>{{ p.created_at }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No predictions yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+/* ===== Animated Background ===== */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #6a11cb, #2575fc, #00c9ff, #92fe9d);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ===== Glass Signup Card ===== */
+
+.signup-container {
+    width: 400px;
+    padding: 40px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    animation: floatCard 4s ease-in-out infinite;
+    transition: 0.4s ease;
+}
+
+@keyframes floatCard {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+.signup-container:hover {
+    box-shadow: 0 35px 80px rgba(0,0,0,0.4);
+}
+
+/* ===== Heading ===== */
+
+h3 {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    font-family: cursive;
+}
+h2 {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    font-family: cursive;
+}
+
+/* ===== Input Fields ===== */
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 14px 18px;
+    margin-top: 18px;
+    border-radius: 14px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    color: white;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+}
+
+/* Hover effect */
+input:hover {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    box-shadow: 0 0 20px rgba(255,154,158,0.7);
+    transform: scale(1.03);
+}
+
+/* Focus effect */
+input:focus {
+    background: linear-gradient(135deg, #00f2fe, #4facfe);
+    box-shadow: 0 0 25px rgba(0,242,254,0.9);
+    transform: scale(1.05);
+}
+
+input::placeholder {
+    color: rgba(255,255,255,0.8);
+}
+
+/* ===== Button ===== */
+
+button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ffffff, #e0e0e0);
+    color: #333;
+    transition: all 0.4s ease;
+}
+
+/* Button hover */
+button:hover {
+    background: linear-gradient(135deg, #ff6a00, #ee0979);
+    color: white;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+    transform: translateY(-4px);
+}
+
+/* ===== Login Link ===== */
+
+.signup-container a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.signup-container a:hover {
+    color: #ffdd57;
+    text-shadow: 0 0 10px rgba(255,221,87,0.8);
+}
