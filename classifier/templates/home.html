@@ -1,208 +1,243 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 <head>
-    <title>ME/CFS vs Depression Predictor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Wellness Assessment</title>
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <style>
-        .slide {
-            display: none;
-        }
 
-        .slide.active {
-            display: block;
-        }
-
-        .container {
-            width: 50%;
-            margin: auto;
-            padding: 20px;
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-
-        button {
-            margin-top: 15px;
-            padding: 8px 15px;
-        }
-
-        .result-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: #eee;
-            text-align: center;
-        }
-
-        .confidence-bar {
-            width: 100%;
-            height: 10px;
-            background: #ddd;
-            margin-top: 10px;
-        }
-
-        .confidence-fill {
-            height: 100%;
-            width: var(--percent);
-            background: green;
-        }
-    </style>
 
 </head>
-
 <body>
 
 <div class="container">
 
+<div class="hero">
+    <h1>🧠 Mental Wellness Assessment</h1>
+    <p>
+        Evaluate symptoms related to Depression, ME/CFS,
+        and overall wellbeing using AI-powered analysis.
+    </p>
+</div>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
 <form method="POST">
-{% csrf_token %}
+    {% csrf_token %}
 
-<!-- Slide 1 -->
-<div class="slide active">
-    <h2>Basic Symptoms</h2>
+    <!-- Slide 1 -->
+    <div class="slide active">
 
-    <label>Body weakness (0-10)</label>
-    <input type="range" name="fatigue_score" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
+        <h2>Physical Symptoms</h2>
 
-    <label>Sleep Disturbance (0-10)</label>
-    <input type="range" name="sleep_disturbance" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
+        <div class="question-card">
 
-    <label>Muscle Pain (0-10)</label>
-    <input type="range" name="muscle_pain" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
+            <label>Body Weakness</label>
+            <input type="range" name="fatigue_score" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
 
-    <label>Joint Pain (0-10)</label>
-    <input type="range" name="joint_pain" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
+            <label>Sleep Disturbance</label>
+            <input type="range" name="sleep_disturbance" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
 
-    <label>Headache Frequency (0-10)</label>
-    <input type="range" name="headache_frequency" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
+            <label>Muscle Pain</label>
+            <input type="range" name="muscle_pain" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
 
-    <button type="button" onclick="nextSlide()">Next →</button>
-</div>
+            <label>Joint Pain</label>
+            <input type="range" name="joint_pain" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
 
-<!-- Slide 2 -->
-<div class="slide">
-    <h2>Mental Health Indicators</h2>
+            <label>Headache Frequency</label>
+            <input type="range" name="headache_frequency" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
 
-    <label>Memory Problems (0-10)</label>
-    <input type="range" name="memory_problems" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
-
-    <label>Concentration Issues (0-10)</label>
-    <input type="range" name="concentration_issues" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
-
-    <label>Mood Score (0-10)</label>
-    <input type="range" name="mood_score" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
-
-    <label>Anxiety Level (0-10)</label>
-    <input type="range" name="anxiety_level" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
-
-    <label>Post Exertional Malaise (0-10)</label>
-    <input type="range" name="post_exertional_malaise" min="0" max="10" value="0"
-           oninput="this.nextElementSibling.value = this.value">
-    <output>0</output>
-
-    <button type="button" onclick="prevSlide()">← Back</button>
-    <button type="submit">Predict</button>
-</div>
-
-<!-- Slide 3 -->
-<div class="slide">
-    <h2>Prediction Result</h2>
-
-    {% if prediction %}
-        <div class="result-box">
-            {{ prediction }}
         </div>
 
-        <div class="confidence-bar">
-            <div class="confidence-fill"
-                 style="--percent: {{ probability }}%;">
+        <div class="tip-box">
+            💙 Thank you for answering. Your responses help improve assessment accuracy.
+        </div>
+
+        <div class="btn-group">
+            <button type="button" onclick="nextSlide()">Next →</button>
+        </div>
+
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+
+        <h2>Mental Health Indicators</h2>
+
+        <div class="question-card">
+
+            <label>Memory Problems</label>
+            <input type="range" name="memory_problems" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
+
+            <label>Concentration Issues</label>
+            <input type="range" name="concentration_issues" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
+
+            <label>Mood Score</label>
+            <input type="range" name="mood_score" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
+
+            <label>Anxiety Level</label>
+            <input type="range" name="anxiety_level" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
+
+            <label>Post Exertional Malaise</label>
+            <input type="range" name="post_exertional_malaise" min="0" max="10" value="0"
+                oninput="this.nextElementSibling.value=this.value">
+            <output>0</output>
+
+        </div>
+
+        <div class="tip-box">
+            🌿 You're almost done. Please answer honestly for the best results.
+        </div>
+
+        <div class="btn-group">
+            <button type="button" onclick="prevSlide()">← Back</button>
+            <button type="submit">Analyze Symptoms</button>
+        </div>
+
+    </div>
+
+    <!-- Result Slide -->
+    <div class="slide">
+
+        <h2>Assessment Result</h2>
+
+        {% if prediction %}
+
+            <div class="result-box">
+
+                {% if prediction == "Normal" %}
+                    <h2>🟢 Normal</h2>
+                {% elif prediction == "Depression" %}
+                    <h2>🟡 Depression Risk</h2>
+                {% else %}
+                    <h2>🔴 ME/CFS Risk</h2>
+                {% endif %}
+
+                <p>Confidence Score</p>
+                <h3>{{ probability }}%</h3>
+
             </div>
-        </div>
 
-        <p style="text-align:center; margin-top:5px;">
-            Confidence: <strong>{{ probability }}%</strong>
-        </p>
+            <div class="confidence-bar">
+                <div class="confidence-fill"
+                     style="width:{{ probability }}%;">
+                </div>
+            </div>
 
-        {% if suggestions %}
-        <div class="suggestions">
-            <h3>Recommended Suggestions:</h3>
-            <ul>
-                {% for tip in suggestions %}
+            {% if suggestions %}
+            <div class="suggestions">
+                <h3>Recommended Suggestions</h3>
+
+                <ul>
+                    {% for tip in suggestions %}
                     <li>{{ tip }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="action-buttons">
+
+                <a href="{% url 'history' %}">
+                    <button type="button">📊 View History</button>
+                </a>
+
+                <a href="{% url 'logout' %}">
+                    <button type="button">🚪 Logout</button>
+                </a>
+
+            </div>
+
+        {% else %}
+
+            <div class="result-box">
+                <h2>No Prediction Yet</h2>
+                <p>Complete the assessment to view results.</p>
+            </div>
+
         {% endif %}
 
-        <div style="text-align:left; margin-top:15px;">
-            <a href="{% url 'history' %}">
-                <button type="button">View Prediction History</button>
-            </a>
-        </div>
-
-        <div style="text-align:right; margin-top:15px;">
-            <a href="{% url 'logout' %}">
-                <button type="button">Logout ←</button>
-            </a>
-        </div>
-
-    {% else %}
-        <div class="result-box">
-            No Prediction Yet
-        </div>
-    {% endif %}
-</div>
+    </div>
 
 </form>
+```
 
 </div>
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    let slides = document.querySelectorAll(".slide");
+    const slides = document.querySelectorAll(".slide");
+    const progressBar = document.getElementById("progressBar");
+
     let current = 0;
 
+    function updateProgress(index){
+
+        if(index === 0){
+            progressBar.style.width = "50%";
+        }
+        else if(index === 1){
+            progressBar.style.width = "100%";
+        }
+        else{
+            progressBar.style.width = "100%";
+        }
+    }
+
     function showSlide(index){
-        slides.forEach(slide => slide.classList.remove("active"));
+
+        slides.forEach(slide=>{
+            slide.classList.remove("active");
+        });
+
         slides[index].classList.add("active");
+
+        updateProgress(index);
     }
 
     window.nextSlide = function(){
+
         if(current < slides.length - 1){
             current++;
             showSlide(current);
         }
+
     }
 
     window.prevSlide = function(){
+
         if(current > 0){
             current--;
             showSlide(current);
         }
+
     }
 
     {% if prediction %}
@@ -214,6 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showSlide(current);
 
 });
+
 </script>
 
 </body>

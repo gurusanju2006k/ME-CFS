@@ -15,8 +15,6 @@ from django.contrib import messages
 from .models import Prediction
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','mecfs_project.setting')
-django.setup()
 # Paths
 
 
@@ -67,7 +65,10 @@ BASE_DIR = settings.BASE_DIR
 APP_DIR = os.path.join(BASE_DIR, "classifier")
 
 
-DATASET_PATH = os.path.join(APP_DIR, "mecfs_depression_dataset_80000_rows-1")
+DATASET_PATH = os.path.join(
+    APP_DIR,
+    "mecfs_depression_dataset_80000_rows-1.csv"
+)
 MODEL_PATH = os.path.join(APP_DIR, "rf_model.pkl")
 ENCODER_PATH = os.path.join(APP_DIR, "label_encoder.pkl")
 
@@ -75,7 +76,6 @@ ENCODER_PATH = os.path.join(APP_DIR, "label_encoder.pkl")
 
 
 # Model Training (only if model not saved)
-
 
 def train_and_save_model():
     data = pd.read_csv(DATASET_PATH)
@@ -87,24 +87,39 @@ def train_and_save_model():
     encoder = LabelEncoder()
     y_encoded = encoder.fit_transform(y)
 
+    print("Classes Found:", encoder.classes_)
+
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y_encoded, test_size=0.2, random_state=42
+        X,
+        y_encoded,
+        test_size=0.2,
+        random_state=42,
+        stratify=y_encoded
     )
 
     model = RandomForestClassifier(
-        n_estimators=20000,
-        max_depth=None,
-        random_state=42
+        n_estimators=500,
+        max_depth=20,
+        min_samples_split=5,
+        min_samples_leaf=2,
+        class_weight="balanced",
+        random_state=42,
+        n_jobs=-1
     )
 
     model.fit(X_train, y_train)
 
-    # Evaluate
-    accuracy = accuracy_score(y_test, model.predict(X_test))
-    print(f"Model trained successfully. Accuracy: {accuracy:.4f}")
+    predictions = model.predict(X_test)
+    accuracy = accuracy_score(y_test, predictions)
+
+    print(f"Model trained successfully.")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Classes Learned: {encoder.classes_}")
 
     joblib.dump(model, MODEL_PATH)
     joblib.dump(encoder, ENCODER_PATH)
+
+    print("Model and encoder saved successfully.")
 
 
 
@@ -178,13 +193,20 @@ def home(request):
             ]
 
             prediction = model.predict([input_features])[0]
-            probability = max(model.predict_proba([input_features])[0])
+
+            probabilities = model.predict_proba([input_features])[0]
+            probability = max(probabilities)
+
             label = encoder.inverse_transform([prediction])[0]
-            Prediction.objects.create(user=request.user,
-            input_data=str(input_features),result=label
-)
 
+            if probability < 0.55:
+                label = "Normal"
 
+            Prediction.objects.create(
+                user=request.user,
+                input_data=str(input_features),
+                result=label
+            )
 
             context = {
                 "prediction": label,
